@@ -14,8 +14,8 @@ export const LoginForm = () => {
     setError,
     formState: { errors },
   } = useForm<LoginFieldType>();
-  const { loading } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.auth);
 
   const onSubmit = async (data: LoginFieldType) => {
     try {

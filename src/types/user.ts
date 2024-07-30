@@ -1,3 +1,5 @@
+import { cartProductType } from "./cartProduct";
+
 export type userType = {
   username: string;
   email: string;
@@ -8,4 +10,5 @@ export type userType = {
   confirmed: boolean;
   blocked: boolean;
   role: string;
+  products?: cartProductType[];
 };
