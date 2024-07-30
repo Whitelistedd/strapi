@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { LoginFieldType } from "./login-form.types";
 import { authApi } from "@/api/auth";
 import { useAppDispatch } from "@/stores/store";
-import { setUser } from "@/stores/slices/user";
+import { setUser } from "@/stores/slices/auth";
 import { setToken } from "@/helpers/tokens";
 
 export const LoginForm = () => {
