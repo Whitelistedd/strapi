@@ -59,4 +59,19 @@ export const registerUser =
     dispatch(setLoading(false));
   };
 
+export const getUser = () => async (dispatch: AppDispatch) => {
+  dispatch(setLoading(true));
+  try {
+    const res = await authApi.fetchUser();
+    console.log(res);
+    setToken(res.data.jwt);
+    dispatch(setUser(res.data.user));
+  } catch (err) {
+    console.error(err);
+    dispatch(setLoading(false));
+    throw new Error();
+  }
+  dispatch(setLoading(false));
+};
+
 export default authSlice.reducer;

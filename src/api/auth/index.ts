@@ -1,3 +1,4 @@
+import { getToken } from "@/helpers/tokens";
 import { api } from "@/lib/axios";
 
 export const authApi = {
@@ -10,5 +11,11 @@ export const authApi = {
   },
   login: (email: string, password: string) => {
     return api.post("/auth/local/login", { email, password });
+  },
+  fetchUser: () => {
+    const token = getToken();
+    return api.get("/user/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   },
 };
