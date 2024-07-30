@@ -86,7 +86,9 @@ export const RegisterForm = () => {
           },
         }}
       />
-      {errors.root?.message && <span>{errors.root.message}</span>}
+      {errors.root?.message && (
+        <span className={styles.error}>{errors.root.message}</span>
+      )}
       {loading && <span>Loading...</span>}
       <Button onClick={() => handleSubmit(onSubmit)()} type="default">
         Submit

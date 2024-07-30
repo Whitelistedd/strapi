@@ -60,13 +60,15 @@ export const LoginForm = () => {
         }}
         secure
       />
-      {errors.root?.message && <span>{errors.root.message}</span>}
+      {errors.root?.message && (
+        <span className={styles.error}>{errors.root.message}</span>
+      )}
       {loading && <span>Loading...</span>}
       <Button onClick={() => handleSubmit(onSubmit)()} type="default">
         Submit
       </Button>
       <p>
-        Want to create an account? <Link to="/">Sign up</Link>
+        Want to create an account? <Link to="/register">Sign up</Link>
       </p>
     </form>
   );
