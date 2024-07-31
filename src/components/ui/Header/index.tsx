@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./Header.module.scss";
 import { useFetchUserQuery } from "@/api/auth";
 import { Button } from "antd";
-import { removeToken, setToken } from "@/helpers/tokens";
+import { getToken, removeToken, setToken } from "@/helpers/tokens";
 
 export const Header = () => {
   const { data, refetch } = useFetchUserQuery(null);
@@ -13,10 +13,12 @@ export const Header = () => {
     refetch();
   };
 
+  console.log(getToken());
+
   return (
     <header className={styles.header}>
       <Link to={"/"}>main page</Link>
-      {data?.id ? (
+      {getToken() ? (
         <>
           <Link to={"/cart"}>cart page</Link>
           <Button onClick={() => handleLogout()}>logout</Button>
