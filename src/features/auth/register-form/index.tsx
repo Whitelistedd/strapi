@@ -2,9 +2,10 @@ import { Input } from "@/components/ui/Input";
 import { useForm } from "react-hook-form";
 import styles from "./register-form.module.scss";
 import { Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterFieldType } from "./register-form.types";
-import { useRegisterMutation } from "@/api/auth";
+import { useFetchUserQuery, useRegisterMutation } from "@/api/auth";
+import { setToken } from "@/helpers/tokens";
 
 export const RegisterForm = () => {
   const {
@@ -14,14 +15,23 @@ export const RegisterForm = () => {
     formState: { errors },
   } = useForm<RegisterFieldType>();
   const [register, { isLoading }] = useRegisterMutation();
+  const { refetch } = useFetchUserQuery(null);
+  const navigate = useNavigate();
 
   const onSubmit = async (data: RegisterFieldType) => {
     try {
-      await register({
+      const res = await register({
         username: data.username,
         email: data.email,
         password: data.password,
       });
+      if (res?.data?.jwt) {
+        setToken(res?.data?.jwt);
+        refetch();
+        navigate("/");
+      } else {
+        setError("root", { message: "Error occurred when trying to register" });
+      }
     } catch (err) {
       setError("root", { message: "Error occurred when trying to register" });
     }

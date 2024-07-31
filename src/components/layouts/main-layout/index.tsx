@@ -1,3 +1,4 @@
+import { Header } from "@/components/ui/Header";
 import styles from "./main-layout.module.scss";
 
 interface Props {
@@ -5,5 +6,10 @@ interface Props {
 }
 
 export const MainLayout = ({ children }: Props) => {
-  return <main className={styles.container}>{children}</main>;
+  return (
+    <main className={styles.container}>
+      <Header />
+      {children}
+    </main>
+  );
 };

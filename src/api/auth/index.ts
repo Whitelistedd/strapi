@@ -6,11 +6,11 @@ export const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_API_URL}/api`,
-    headers: { Authorization: `Bearer ${getToken()}` },
+    headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
   }),
   endpoints: (builder) => ({
     register: builder.mutation<
-      userType,
+      { jwt: string; user: userType },
       { username: string; email: string; password: string }
     >({
       query: ({ email, password, username }) => ({
@@ -23,12 +23,15 @@ export const authApi = createApi({
         },
       }),
     }),
-    login: builder.mutation<userType, { email: string; password: string }>({
+    login: builder.mutation<
+      { jwt: string; user: userType },
+      { email: string; password: string }
+    >({
       query: ({ email, password }) => ({
         method: "POST",
-        url: "/auth/local/login",
+        url: "/auth/local",
         body: {
-          email,
+          identifier: email,
           password,
         },
       }),
