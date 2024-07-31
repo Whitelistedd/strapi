@@ -4,8 +4,7 @@ import styles from "./login-form.module.scss";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { LoginFieldType } from "./login-form.types";
-import { useAppDispatch, useAppSelector } from "@/stores/store";
-import { loginUser } from "@/stores/slices/auth";
+import { useLoginMutation } from "@/api/auth";
 
 export const LoginForm = () => {
   const {
@@ -14,12 +13,11 @@ export const LoginForm = () => {
     setError,
     formState: { errors },
   } = useForm<LoginFieldType>();
-  const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((state) => state.auth);
+  const [login, { isLoading }] = useLoginMutation();
 
   const onSubmit = async (data: LoginFieldType) => {
     try {
-      await dispatch(loginUser({ email: data.email, password: data.password }));
+      await login({ email: data.email, password: data.password });
     } catch (err) {
       setError("root", { message: "Error occurred when trying to register" });
     }
@@ -63,7 +61,7 @@ export const LoginForm = () => {
       {errors.root?.message && (
         <span className={styles.error}>{errors.root.message}</span>
       )}
-      {loading && <span>Loading...</span>}
+      {isLoading && <span>Loading...</span>}
       <Button onClick={() => handleSubmit(onSubmit)()} type="default">
         Submit
       </Button>

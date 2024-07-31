@@ -4,8 +4,7 @@ import styles from "./register-form.module.scss";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterFieldType } from "./register-form.types";
-import { useAppDispatch, useAppSelector } from "@/stores/store";
-import { registerUser } from "@/stores/slices/auth";
+import { useRegisterMutation } from "@/api/auth";
 
 export const RegisterForm = () => {
   const {
@@ -14,18 +13,15 @@ export const RegisterForm = () => {
     setError,
     formState: { errors },
   } = useForm<RegisterFieldType>();
-  const { loading } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+  const [register, { isLoading }] = useRegisterMutation();
 
   const onSubmit = async (data: RegisterFieldType) => {
     try {
-      await dispatch(
-        registerUser({
-          username: data.username,
-          email: data.email,
-          password: data.password,
-        })
-      );
+      await register({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
     } catch (err) {
       setError("root", { message: "Error occurred when trying to register" });
     }
@@ -89,7 +85,7 @@ export const RegisterForm = () => {
       {errors.root?.message && (
         <span className={styles.error}>{errors.root.message}</span>
       )}
-      {loading && <span>Loading...</span>}
+      {isLoading && <span>Loading...</span>}
       <Button onClick={() => handleSubmit(onSubmit)()} type="default">
         Submit
       </Button>
