@@ -11,4 +11,5 @@ export type userType = {
   blocked: boolean;
   role: string;
   products?: cartProductType[];
+  id: number;
 };

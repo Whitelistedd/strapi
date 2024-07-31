@@ -63,9 +63,7 @@ export const getUser = () => async (dispatch: AppDispatch) => {
   dispatch(setLoading(true));
   try {
     const res = await authApi.fetchUser();
-    console.log(res);
-    setToken(res.data.jwt);
-    dispatch(setUser(res.data.user));
+    dispatch(setUser(res.data));
   } catch (err) {
     console.error(err);
     dispatch(setLoading(false));

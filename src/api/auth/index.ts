@@ -14,7 +14,7 @@ export const authApi = {
   },
   fetchUser: () => {
     const token = getToken();
-    return api.get("/users/me?populate=*", {
+    return api.get("/users/me", {
       headers: { Authorization: `Bearer ${token}` },
     });
   },

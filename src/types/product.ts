@@ -1,5 +1,15 @@
 export type productType = {
-  title: string;
-  image: string;
-  price: number;
+  attributes: {
+    title: string;
+    image: {
+      data: {
+        attributes: {
+          name: string;
+          url: string;
+        };
+      };
+    };
+    price: number;
+  };
+  id: number;
 };
