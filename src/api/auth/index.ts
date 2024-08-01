@@ -6,7 +6,6 @@ export const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_API_URL}/api`,
-    headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
   }),
   endpoints: (builder) => ({
     register: builder.mutation<
@@ -36,8 +35,13 @@ export const authApi = createApi({
         },
       }),
     }),
-    fetchUser: builder.query<userType, null>({
-      query: () => "/users/me",
+    fetchUser: builder.query<userType>({
+      query: () => ({
+        url: "/users/me",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }),
     }),
   }),
 });

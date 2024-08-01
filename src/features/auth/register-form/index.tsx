@@ -27,7 +27,7 @@ export const RegisterForm = () => {
       });
       if (res?.data?.jwt) {
         setToken(res?.data?.jwt);
-        refetch();
+        await refetch();
         navigate("/");
       } else {
         setError("root", { message: "Error occurred when trying to register" });

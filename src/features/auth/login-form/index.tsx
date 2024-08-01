@@ -23,8 +23,8 @@ export const LoginForm = () => {
       const res = await login({ email: data.email, password: data.password });
       if (res?.data?.jwt) {
         setToken(res?.data?.jwt);
+        await refetch();
         navigate("/");
-        refetch();
       } else {
         setError("root", { message: "Error occurred when trying to register" });
       }

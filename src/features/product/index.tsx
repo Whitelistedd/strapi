@@ -7,6 +7,7 @@ import {
 import { useFetchUserQuery } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
+import { getToken } from "@/helpers/tokens";
 
 interface Props {
   title: string;
@@ -17,13 +18,16 @@ interface Props {
 
 export const Product = ({ id, title, image, price }: Props) => {
   const { data: cartData, refetch } = useGetCartProductsQuery(null);
-  const { data: userData } = useFetchUserQuery(null);
+  const { data: userData, refetch: refetchUser } = useFetchUserQuery(null);
   const [updateCartProducts] = useUpdateCartProductsMutation();
   const navigate = useNavigate();
   const cartProductIds = cartData?.products?.map((product) => product.id);
 
   const handleAddProductToCart = (productId: number) => {
-    if (!userData?.id) navigate("/login");
+    if (!userData?.id) {
+      refetchUser();
+      navigate("/login");
+    }
     updateCartProducts({
       userId: Number(userData?.id),
       productIds: [...(cartProductIds ? cartProductIds : []), productId],
@@ -32,7 +36,7 @@ export const Product = ({ id, title, image, price }: Props) => {
   };
 
   const handleRemoveProductFromCart = (productId: number) => {
-    if (!userData?.id) navigate("/login");
+    if (!getToken()) navigate("/login");
     if (!cartProductIds) return;
     const newCartProductIds = cartProductIds?.filter(
       (cartProductId) => cartProductId !== productId
